@@ -1,12 +1,146 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
+
 <head>
-    <title>Vila Nova 50Tão</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Vila Nova 50Tão</title>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
+body{
+background:#f5f5f5;
+}
+
+header{
+background:#c00000;
+color:white;
+text-align:center;
+padding:40px 20px;
+}
+
+header h1{
+font-size:40px;
+}
+
+header p{
+margin-top:10px;
+font-size:18px;
+}
+
+.container{
+max-width:1200px;
+margin:auto;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:20px;
+margin-bottom:20px;
+border-radius:15px;
+box-shadow:0 3px 10px rgba(0,0,0,.15);
+}
+
+.card h2{
+color:#c00000;
+margin-bottom:10px;
+}
+
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:15px;
+}
+
+.stat{
+background:#c00000;
+color:white;
+padding:20px;
+border-radius:10px;
+text-align:center;
+}
+
+footer{
+background:#c00000;
+color:white;
+text-align:center;
+padding:20px;
+margin-top:30px;
+}
+
+</style>
+
 </head>
+
 <body>
 
-    <h1>⚽ Vila Nova 50Tão</h1>
-    <h2>Quatiguaba</h2>
+<header>
+
+<h1>⚽ Vila Nova 50Tão</h1>
+
+<p>Quatiguaba - CE</p>
+
+</header>
+
+<div class="container">
+
+<div class="card">
+<h2>Próximo Jogo</h2>
+<p>Em breve...</p>
+</div>
+
+<div class="card">
+<h2>Último Resultado</h2>
+<p>Em breve...</p>
+</div>
+
+<div class="card">
+<h2>Caixa Atual</h2>
+<p>R$ 0,00</p>
+</div>
+
+<h2 style="margin-bottom:15px;color:#c00000;">
+Estatísticas
+</h2>
+
+<div class="stats">
+
+<div class="stat">
+<h3>Jogos</h3>
+<p>0</p>
+</div>
+
+<div class="stat">
+<h3>Vitórias</h3>
+<p>0</p>
+</div>
+
+<div class="stat">
+<h3>Empates</h3>
+<p>0</p>
+</div>
+
+<div class="stat">
+<h3>Derrotas</h3>
+<p>0</p>
+</div>
+
+</div>
+
+</div>
+
+<footer>
+Vila Nova 50Tão © 2026
+</footer>
 
 </body>
 </html>
