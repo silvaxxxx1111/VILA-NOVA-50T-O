@@ -9,7 +9,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <style>
-
 body{
     margin:0;
     font-family:Arial, sans-serif;
@@ -33,7 +32,6 @@ body{
 h1{
     color:#c00000;
 }
-
 </style>
 </head>
 
@@ -57,146 +55,123 @@ Carregando...
 <br><br>
 
 <input id="numeroCamisa" type="number" placeholder="Número da camisa">
-
 <br><br>
 
 <input id="valorPago" type="number" placeholder="Valor pago">
-
 <br><br>
 
 <input id="gols" type="number" placeholder="Gols">
-
 <br><br>
 
 <input id="observacaoJogador" placeholder="Observação">
-
 <br><br>
 
-<button onclick="adicionarJogador()">
-Adicionar Jogador
-</button>
+<button onclick="adicionarJogador()">Adicionar Jogador</button>
 
 <hr>
 
 <div id="listaJogadores"></div>
-
 </div>
 
 <div class="card">
 <h2>💰 Financeiro</h2>
-
 <p>Em breve...</p>
-
 </div>
 
 </div>
 
 <script>
-
+// ===================== SUPABASE =====================
 const supabaseUrl = "https://rjmhbimtgvobhkfhmnkj.supabase.co";
-const supabaseKey = "sb_publishable_ub_L3pyIFYP3sCjXb_kfpA_MtyRM5rY";
+const supabaseKey = "SUA_CHAVE_AQUI"; // <-- coloque sua key correta
 
-const clienteSupabase =
-supabase.createClient(supabaseUrl, supabaseKey);
+const clienteSupabase = supabase.createClient(supabaseUrl, supabaseKey);
 
+// ===================== ID DO JOGO =====================
 const params = new URLSearchParams(window.location.search);
 const jogoId = Number(params.get("id"));
-    console.log("JOGO ID:", jogoId);
+
+console.log("JOGO ID:", jogoId);
+
+// ===================== CARREGAR JOGO =====================
 async function carregarJogo(){
 
-const { data, error } =
-await clienteSupabase
-.from("jogos")
-.select("*")
-.eq("id", jogoId)
-.single();
+    const { data, error } = await clienteSupabase
+        .from("jogos")
+        .select("*")
+        .eq("id", jogoId)
+        .single();
 
-if(error){
+    if(error){
+        console.log(error);
+        document.getElementById("dadosJogo").innerHTML =
+        "Erro ao carregar jogo";
+        return;
+    }
 
-console.log(error);
-
-document.getElementById("dadosJogo").innerHTML =
-"Erro ao carregar jogo";
-
-return;
-
+    document.getElementById("dadosJogo").innerHTML = `
+        <h2>${data.adversario}</h2>
+        <p>📅 ${data.data_jogo}</p>
+        <p>📍 ${data.local}</p>
+        <p>🏠 ${data.tipo_jogo}</p>
+        <p>👕 ${data.uniforme}</p>
+        <p>📝 ${data.observacoes || ""}</p>
+    `;
 }
 
-document.getElementById("dadosJogo").innerHTML = `
-<h2>${data.adversario}</h2>
-
-<p>📅 ${data.data_jogo}</p>
-
-<p>📍 ${data.local}</p>
-
-<p>🏠 ${data.tipo_jogo}</p>
-
-<p>👕 ${data.uniforme}</p>
-
-<p>📝 ${data.observacoes || ""}</p>
-`;
-
-}
+// ===================== CARREGAR JOGADORES (SELECT) =====================
 async function carregarJogadores(){
 
-    const { data } = await clienteSupabase
-    .from('jogadores')
-    .select('*')
-    .order('nome');
+    const { data, error } = await clienteSupabase
+        .from('jogadores')
+        .select('*')
+        .order('nome');
 
     const select = document.getElementById('jogadorSelect');
 
-    select.innerHTML =
-    '<option value="">Selecione um jogador</option>';
+    select.innerHTML = '<option value="">Selecione um jogador</option>';
+
+    if(!data) return;
 
     data.forEach(jogador => {
-
         select.innerHTML += `
-        <option value="${jogador.id}">
-            ${jogador.nome}
-        </option>
+            <option value="${jogador.id}">
+                ${jogador.nome}
+            </option>
         `;
-
     });
-
 }
+
+// ===================== ADICIONAR JOGADOR =====================
 window.adicionarJogador = async function () {
 
-    const jogador_id =
-    document.getElementById('jogadorSelect').value;
+    const jogador_id = document.getElementById('jogadorSelect').value;
+    const numero_camisa = document.getElementById('numeroCamisa').value;
+    const valor_pago = document.getElementById('valorPago').value || 0;
+    const gols = document.getElementById('gols').value || 0;
+    const observacao = document.getElementById('observacaoJogador').value;
 
-    const numero_camisa =
-    document.getElementById('numeroCamisa').value;
-
-    const valor_pago =
-    document.getElementById('valorPago').value || 0;
-
-    const gols =
-    document.getElementById('gols').value || 0;
-
-    const observacao =
-    document.getElementById('observacaoJogador').value;
+    if(!jogador_id){
+        alert("Selecione um jogador");
+        return;
+    }
 
     console.log("JOGO ID:", jogoId);
 
     const { data, error } = await clienteSupabase
-  .from('jogadores_jogo')
-  .insert([
-    {
-      jogo_id: jogoId,
-      jogador_id,
-      numero_camisa,
-      valor_pago,
-      gols,
-      observacao
-    }
-  ])
-  .select();
+        .from('jogadores_jogo')
+        .insert([{
+            jogo_id: jogoId,
+            jogador_id,
+            numero_camisa,
+            valor_pago,
+            gols,
+            observacao
+        }])
+        .select();
 
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
-
-    if (error) {
+    if(error){
+        console.log(error);
         alert('Erro ao adicionar jogador');
         return;
     }
@@ -206,46 +181,41 @@ window.adicionarJogador = async function () {
     listarJogadores();
 }
 
-}
-
+// ===================== LISTAR JOGADORES =====================
 async function listarJogadores(){
 
-const { data, error } = await clienteSupabase
-.from('jogadores_jogo')
-.select(`
-  *,
-  jogadores(nome)
-`)
-.eq('jogo_id', jogoId);
+    const { data, error } = await clienteSupabase
+        .from('jogadores_jogo')
+        .select(`
+            *,
+            jogadores(nome)
+        `)
+        .eq('jogo_id', jogoId);
 
-const lista =
-document.getElementById('listaJogadores');
+    const lista = document.getElementById('listaJogadores');
+    lista.innerHTML = '';
 
-lista.innerHTML = '';
+    if(!data) return;
 
-data.forEach(item => {
+    data.forEach(item => {
 
-    lista.innerHTML += `
-    <div style="
-    background:white;
-    padding:10px;
-    margin-top:10px;
-    border-radius:10px;
-    ">
-    <strong>${item.jogadores.nome}</strong><br>
-    👕 Camisa ${item.numero_camisa}<br>
-    💰 R$ ${item.valor_pago}<br>
-    ⚽ ${item.gols} gols<br>
-    📝 ${item.observacao || ''}
-    </div>
-    `;
-
-});
-
+        lista.innerHTML += `
+            <div style="background:white;padding:10px;margin-top:10px;border-radius:10px;">
+                <strong>${item.jogadores?.nome || 'Jogador'}</strong><br>
+                👕 Camisa ${item.numero_camisa}<br>
+                💰 R$ ${item.valor_pago}<br>
+                ⚽ ${item.gols} gols<br>
+                📝 ${item.observacao || ''}
+            </div>
+        `;
+    });
 }
+
+// ===================== INIT =====================
 carregarJogo();
 carregarJogadores();
 listarJogadores();
+
 </script>
 
 </body>
