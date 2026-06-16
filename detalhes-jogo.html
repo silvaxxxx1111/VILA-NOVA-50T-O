@@ -180,16 +180,18 @@ window.adicionarJogador = async function () {
     console.log("JOGO ID:", jogoId);
 
     const { data, error } = await clienteSupabase
-        .from('jogadores_jogo')
-        .insert([{
-            jogo_id: jogoId,
-            jogador_id,
-            numero_camisa,
-            valor_pago,
-            gols,
-            observacao
-        }])
-        .select();
+  .from('jogadores_jogo')
+  .insert([
+    {
+      jogo_id: jogoId,
+      jogador_id,
+      numero_camisa,
+      valor_pago,
+      gols,
+      observacao
+    }
+  ])
+  .select();
 
     console.log("DATA:", data);
     console.log("ERROR:", error);
