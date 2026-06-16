@@ -111,12 +111,18 @@ async function carregarJogadores() {
     let html = "";
 
     data.forEach(jogador => {
-        html += `
-        <div class="jogador">
-            👤 ${jogador.nome}
-        </div>
-        `;
-    });
+    html += `
+    <div class="jogador">
+        👤 ${jogador.nome}
+
+        <br><br>
+
+        <button onclick="editarJogador(${jogador.id}, '${jogador.nome}')">
+            ✏️ Editar
+        </button>
+    </div>
+    `;
+});
 
     document.getElementById("lista-jogadores").innerHTML = html;
 }
