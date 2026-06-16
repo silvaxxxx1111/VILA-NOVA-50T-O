@@ -151,35 +151,36 @@ window.adicionarJogador = async function () {
     const gols = document.getElementById('gols').value || 0;
     const observacao = document.getElementById('observacaoJogador').value;
 
-    if(!jogador_id){
+    if (!jogador_id) {
         alert("Selecione um jogador");
         return;
     }
 
-    console.log("JOGO ID:", jogoId);
+    console.log("ID DO JOGO:", jogoId);
 
     const { data, error } = await clienteSupabase
         .from('jogadores_jogo')
         .insert([{
             jogo_id: jogoId,
-            jogador_id,
-            numero_camisa,
-            valor_pago,
-            gols,
+            jogador_id: Number(jogador_id),
+            numero_camisa: Number(numero_camisa),
+            valor_pago: Number(valor_pago),
+            gols: Number(gols),
             observacao
         }])
         .select();
 
-    if(error){
-        console.log(error);
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+
+    if (error) {
         alert('Erro ao adicionar jogador');
         return;
     }
 
-    alert('Jogador adicionado');
-
+    alert('Jogador adicionado com sucesso!');
     listarJogadores();
-}
+};
 
 // ===================== LISTAR JOGADORES =====================
 async function listarJogadores(){
