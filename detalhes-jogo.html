@@ -160,8 +160,9 @@ async function carregarJogadores(){
     });
 
 }
-
 async function adicionarJogador(){
+
+    console.log("ID DO JOGO:", jogoId);
 
     const jogador_id =
     document.getElementById('jogadorSelect').value;
@@ -180,7 +181,6 @@ async function adicionarJogador(){
 
     const { error } = await clienteSupabase
     .from('jogadores_jogo')
-        console.log("ID DO JOGO:", jogoId);
     .insert([{
         jogo_id: jogoId,
         jogador_id,
@@ -191,49 +191,51 @@ async function adicionarJogador(){
     }]);
 
     if(error){
-
         alert('Erro ao adicionar jogador');
         console.log(error);
         return;
-
     }
 
     alert('Jogador adicionado');
 
     listarJogadores();
+}
 
 }
 
 async function listarJogadores(){
 
-  const { data, error } = await clienteSupabase
+const { data, error } = await clienteSupabase
 .from('jogadores_jogo')
-.select('*')
+.select(`
+  *,
+  jogadores(nome)
+`)
 .eq('jogo_id', jogoId);
 
-    const lista =
-    document.getElementById('listaJogadores');
+const lista =
+document.getElementById('listaJogadores');
 
-    lista.innerHTML = '';
+lista.innerHTML = '';
 
-    data.forEach(item => {
+data.forEach(item => {
 
-        lista.innerHTML += `
-        <div style="
-        background:white;
-        padding:10px;
-        margin-top:10px;
-        border-radius:10px;
-        ">
-        <strong>${item.jogadores.nome}</strong><br>
-        👕 Camisa ${item.numero_camisa}<br>
-        💰 R$ ${item.valor_pago}<br>
-        ⚽ ${item.gols} gols<br>
-        📝 ${item.observacao || ''}
-        </div>
-        `;
+    lista.innerHTML += `
+    <div style="
+    background:white;
+    padding:10px;
+    margin-top:10px;
+    border-radius:10px;
+    ">
+    <strong>${item.jogadores.nome}</strong><br>
+    👕 Camisa ${item.numero_camisa}<br>
+    💰 R$ ${item.valor_pago}<br>
+    ⚽ ${item.gols} gols<br>
+    📝 ${item.observacao || ''}
+    </div>
+    `;
 
-    });
+});
 
 }
 carregarJogo();
