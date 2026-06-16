@@ -61,13 +61,84 @@ border-radius:10px;
 
 <textarea id="observacoes" placeholder="Observações"></textarea>
 
-<button>Salvar Jogo</button>
+<button onclick="salvarJogo()">Salvar Jogo</button>
 
 <hr>
 
 <h2>Jogos Cadastrados</h2>
 
 <div id="listaJogos"></div>
+<script>
 
+const supabaseUrl = "https://rjmhbimtgvobhkfhmnkj.supabase.co";
+
+const supabaseKey = "sb_publishable_ub_L3pyIFYP3sCjXb_kfpA_MtyRM5rY";
+const clienteSupabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+async function salvarJogo(){
+
+    const adversario = document.getElementById('adversario').value;
+    const data_jogo = document.getElementById('data_jogo').value;
+    const local = document.getElementById('local').value;
+    const tipo_jogo = document.getElementById('tipo_jogo').value;
+    const uniforme = document.getElementById('uniforme').value;
+    const observacoes = document.getElementById('observacoes').value;
+
+    const { error } = await clienteSupabase
+    .from('jogos')
+    .insert([{
+        adversario,
+        data_jogo,
+        local,
+        tipo_jogo,
+        uniforme,
+        observacoes
+    }]);
+
+    if(error){
+        alert("Erro ao salvar jogo");
+        console.log(error);
+        return;
+    }
+
+    alert("Jogo cadastrado com sucesso!");
+
+    carregarJogos();
+}
+
+async function carregarJogos(){
+
+    const { data, error } = await clienteSupabase
+    .from('jogos')
+    .select('*')
+    .order('data_jogo',{ascending:false});
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    const lista = document.getElementById('listaJogos');
+
+    lista.innerHTML = '';
+
+    data.forEach(jogo => {
+
+        lista.innerHTML += `
+        <div style="background:white;padding:15px;margin-top:10px;border-radius:10px;">
+            <strong>${jogo.adversario}</strong><br>
+            📅 ${jogo.data_jogo}<br>
+            📍 ${jogo.local}<br>
+            ${jogo.tipo_jogo}<br>
+            👕 ${jogo.uniforme}
+        </div>
+        `;
+    });
+
+}
+
+carregarJogos();
+
+</script>
 </body>
 </html>
