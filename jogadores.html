@@ -127,10 +127,10 @@ async function adicionarJogador(){
     if(!nome) return;
 
     const { error } = await clienteSupabase
-    .from('jogadores')
-    .insert([
-        { nome: nome }
-    ]);
+        .from('jogadores')
+        .insert([
+            { nome: nome }
+        ]);
 
     if(error){
         alert("Erro ao adicionar jogador");
