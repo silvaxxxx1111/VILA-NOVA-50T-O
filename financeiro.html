@@ -2,20 +2,85 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Financeiro - Vila Nova 50Tão</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+body{
+    font-family: Arial, sans-serif;
+    max-width: 1000px;
+    margin: auto;
+    padding: 20px;
+}
+
+nav{
+    margin-bottom:20px;
+}
+
+nav a{
+    margin-right:15px;
+    text-decoration:none;
+}
+
+.card{
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:15px;
+    margin-bottom:20px;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    margin-top:5px;
+    margin-bottom:10px;
+}
+
+button{
+    padding:10px 15px;
+    cursor:pointer;
+}
+</style>
+
 </head>
 <body>
+
 <nav>
   <a href="index.html">🏠 Início</a>
   <a href="jogos.html">⚽ Jogos</a>
   <a href="jogadores.html">👥 Jogadores</a>
   <a href="financeiro.html">💰 Financeiro</a>
 </nav>
+
 <h1>Financeiro</h1>
 
-<p>Página em construção...</p>
+<div class="card">
+<h3>Novo lançamento</h3>
 
-<a href="index.html">Voltar ao início</a>
+<select id="tipo">
+    <option value="Receita">Receita</option>
+    <option value="Despesa">Despesa</option>
+</select>
+
+<input type="text" id="categoria" placeholder="Categoria">
+
+<input type="number" id="valor" placeholder="Valor">
+
+<input type="text" id="descricao" placeholder="Descrição">
+
+<select id="jogo"></select>
+
+<button onclick="salvarLancamento()">
+Salvar lançamento
+</button>
+</div>
+
+<div class="card">
+<h3>Lançamentos</h3>
+<div id="listaFinanceiro"></div>
+</div>
 
 </body>
 </html>
