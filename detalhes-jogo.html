@@ -160,7 +160,7 @@ async function carregarJogadores(){
     });
 
 }
-async function adicionarJogador() {
+window.adicionarJogador = async function () {
 
     const jogador_id =
     document.getElementById('jogadorSelect').value;
@@ -199,10 +199,6 @@ async function adicionarJogador() {
         return;
     }
 
-    alert('Jogador adicionado');
-
-    listarJogadores();
-}
     alert('Jogador adicionado');
 
     listarJogadores();
