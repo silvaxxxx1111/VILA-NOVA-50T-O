@@ -100,9 +100,7 @@ const clienteSupabase =
 supabase.createClient(supabaseUrl, supabaseKey);
 
 const params = new URLSearchParams(window.location.search);
-
-const jogoId = params.get("id");
-
+const jogoId = Number(params.get("id"));
 async function carregarJogo(){
 
 const { data, error } =
@@ -181,6 +179,7 @@ async function adicionarJogador(){
 
     const { error } = await clienteSupabase
     .from('jogadores_jogo')
+        console.log("ID DO JOGO:", jogoId);
     .insert([{
         jogo_id: jogoId,
         jogador_id,
