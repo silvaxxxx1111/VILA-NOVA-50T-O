@@ -120,7 +120,26 @@ async function carregarJogadores() {
 
     document.getElementById("lista-jogadores").innerHTML = html;
 }
+async function adicionarJogador(){
 
+    const nome = prompt("Digite o nome do jogador:");
+
+    if(!nome) return;
+
+    const { error } = await supabase
+        .from('jogadores')
+        .insert([
+            { nome: nome }
+        ]);
+
+    if(error){
+        alert("Erro ao adicionar jogador");
+        console.log(error);
+        return;
+    }
+
+    carregarJogadores();
+}
 carregarJogadores();
 
 </script>
