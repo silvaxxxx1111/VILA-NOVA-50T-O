@@ -146,6 +146,25 @@ async function adicionarJogador(){
 
     carregarJogadores();
 }
+    async function editarJogador(id, nomeAtual){
+
+    const novoNome = prompt("Editar jogador:", nomeAtual);
+
+    if(!novoNome) return;
+
+    const { error } = await clienteSupabase
+        .from('jogadores')
+        .update({ nome: novoNome })
+        .eq('id', id);
+
+    if(error){
+        alert("Erro ao editar jogador");
+        console.log(error);
+        return;
+    }
+
+    carregarJogadores();
+}
 carregarJogadores();
 
 </script>
