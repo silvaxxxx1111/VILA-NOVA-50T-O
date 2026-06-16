@@ -101,6 +101,7 @@ supabase.createClient(supabaseUrl, supabaseKey);
 
 const params = new URLSearchParams(window.location.search);
 const jogoId = Number(params.get("id"));
+    console.log("JOGO ID:", jogoId);
 async function carregarJogo(){
 
 const { data, error } =
