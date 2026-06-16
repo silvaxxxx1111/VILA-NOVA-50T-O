@@ -206,13 +206,10 @@ async function adicionarJogador(){
 
 async function listarJogadores(){
 
-    const { data } = await clienteSupabase
-    .from('jogadores_jogo')
-    .select(`
-        *,
-        jogadores(nome)
-    `)
-    .eq('jogo_id', jogoId);
+  const { data, error } = await clienteSupabase
+.from('jogadores_jogo')
+.select('*')
+.eq('jogo_id', jogoId);
 
     const lista =
     document.getElementById('listaJogadores');
