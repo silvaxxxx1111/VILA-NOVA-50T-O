@@ -168,17 +168,25 @@ async function carregarFinanceiro(){
     });
 
     const saldo = receitas - despesas;
+let resultadoTexto = "";
+let resultadoCor = "";
 
+if(saldo >= 0){
+    resultadoTexto = "🟢 LUCRO";
+    resultadoCor = "green";
+}else{
+    resultadoTexto = "🔴 PREJUÍZO";
+    resultadoCor = "red";
+}
     document.getElementById("financeiroJogo").innerHTML = `
 
         <p><strong>Receitas:</strong> R$ ${receitas.toFixed(2)}</p>
 
         <p><strong>Despesas:</strong> R$ ${despesas.toFixed(2)}</p>
 
-        <p>
-        <strong>Saldo:</strong>
-        R$ ${saldo.toFixed(2)}
-        </p>
+        <p style="font-size:22px;font-weight:bold;color:${resultadoCor};">
+${resultadoTexto}: R$ ${Math.abs(saldo).toFixed(2)}
+</p>
 
         <hr>
 
