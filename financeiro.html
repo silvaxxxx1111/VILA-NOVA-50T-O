@@ -99,34 +99,48 @@ style="width:100%;margin-top:10px;margin-bottom:10px;"></textarea>
 
 </select>
 
-<h4>Participações</h4>
+<div id="camposPessoas">
 
-<input
-    type="number"
-    id="qtd1"
-    placeholder="Quantidade de pessoas">
+    <h4>Participações</h4>
 
-<input
-    type="number"
-    id="valor1"
-    placeholder="Valor pago por cada pessoa">
+    <input
+        type="number"
+        id="qtd1"
+        placeholder="Quantidade grupo 1">
 
-<input
-    type="number"
-    id="qtd2"
-    placeholder="Outra quantidade de pessoas">
+    <input
+        type="number"
+        id="valor1"
+        placeholder="Valor grupo 1">
 
-<input
-    type="number"
-    id="valor2"
-    placeholder="Outro valor por pessoa">
+    <input
+        type="number"
+        id="qtd2"
+        placeholder="Quantidade grupo 2">
+
+    <input
+        type="number"
+        id="valor2"
+        placeholder="Valor grupo 2">
+
+</div>
+
+<div id="campoValorUnico" style="display:none;">
+
+    <h4>Valor</h4>
+
+    <input
+        type="number"
+        id="valorManual"
+        placeholder="Valor">
+
+</div>
 
 <input
     type="number"
     id="valor"
     placeholder="Total"
     readonly>
-
 <input
     type="text"
     id="descricao"
@@ -195,9 +209,17 @@ async function salvarLancamento(){
     const valor2 =
     Number(document.getElementById("valor2").value) || 0;
 
-    const valor =
-    (qtd1 * valor1) +
-    (qtd2 * valor2);
+    const valorCalculado =
+(qtd1 * valor1) +
+(qtd2 * valor2);
+
+const valorManual =
+Number(document.getElementById("valorManual").value) || 0;
+
+const valor =
+valorCalculado > 0
+? valorCalculado
+: valorManual;
 
     const descricao =
     document.getElementById("descricao").value;
@@ -237,7 +259,40 @@ async function salvarLancamento(){
 
     listarFinanceiro();
 }
+function controlarCampos(){
 
+    const categoria =
+    document.getElementById("categoria").value;
+
+    const categoriasComPessoas = [
+        "Cota Jogador",
+        "Contribuição",
+        "Passagem"
+    ];
+
+    if(categoriasComPessoas.includes(categoria)){
+
+        document.getElementById("camposPessoas")
+        .style.display = "block";
+
+        document.getElementById("campoValorUnico")
+        .style.display = "none";
+
+    }else{
+
+        document.getElementById("camposPessoas")
+        .style.display = "none";
+
+        document.getElementById("campoValorUnico")
+        .style.display = "block";
+
+    }
+
+}
+
+document
+.getElementById("categoria")
+.addEventListener("change", controlarCampos);
 async function listarFinanceiro(){
 
     const { data } =
@@ -290,28 +345,40 @@ async function listarFinanceiro(){
 }
 function calcularTotal(){
 
-    const quantidade =
-    Number(document.getElementById("quantidade").value) || 0;
+    const qtd1 =
+    Number(document.getElementById("qtd1").value) || 0;
 
-    const valorUnitario =
-    Number(document.getElementById("valorUnitario").value) || 0;
+    const valor1 =
+    Number(document.getElementById("valor1").value) || 0;
+
+    const qtd2 =
+    Number(document.getElementById("qtd2").value) || 0;
+
+    const valor2 =
+    Number(document.getElementById("valor2").value) || 0;
 
     document.getElementById("valor").value =
-    (quantidade * valorUnitario).toFixed(2);
+    (qtd1 * valor1) + (qtd2 * valor2);
 
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document
+.getElementById("qtd1")
+.addEventListener("input", calcularTotal);
 
-    document
-    .getElementById("quantidade")
-    .addEventListener("input", calcularTotal);
+document
+.getElementById("valor1")
+.addEventListener("input", calcularTotal);
 
-    document
-    .getElementById("valorUnitario")
-    .addEventListener("input", calcularTotal);
+document
+.getElementById("qtd2")
+.addEventListener("input", calcularTotal);
 
-});
+document
+.getElementById("valor2")
+.addEventListener("input", calcularTotal);
+
+controlarCampos();
 carregarJogos();
 listarFinanceiro();
 
