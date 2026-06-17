@@ -139,11 +139,17 @@ async function carregarFinanceiro(){
 
             receitas += Number(item.valor);
 
-            htmlReceitas += `
-            <p>
-            🟢 ${item.categoria}
-            • R$ ${Number(item.valor).toFixed(2)}
-            </p>
+           htmlReceitas += `
+<p>
+🟢 ${item.categoria}
+• R$ ${Number(item.valor).toFixed(2)}
+
+<button onclick="excluirLancamento(${item.id})">
+🗑️ Excluir
+</button>
+
+</p>
+`;
 
             ${item.descricao ?
 `<div style="
@@ -160,11 +166,17 @@ color:#555;
 
             despesas += Number(item.valor);
 
-            htmlDespesas += `
-            <p>
-            🔴 ${item.categoria}
-            • R$ ${Number(item.valor).toFixed(2)}
-            </p>
+           htmlDespesas += `
+<p>
+🔴 ${item.categoria}
+• R$ ${Number(item.valor).toFixed(2)}
+
+<button onclick="excluirLancamento(${item.id})">
+🗑️ Excluir
+</button>
+
+</p>
+`;
 
             ${item.descricao ?
 `<div style="
@@ -311,7 +323,27 @@ async function listarJogadores(){
     });
 }
 
-// ===================== INIT =====================
+async function excluirLancamento(id){
+
+    const confirmar =
+    confirm("Deseja realmente excluir este lançamento?");
+
+    if(!confirmar) return;
+
+    const { error } =
+    await clienteSupabase
+    .from("financeiro")
+    .delete()
+    .eq("id", id);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    carregarFinanceiro();
+
+}
 carregarJogo();
 carregarJogadores();
 listarJogadores();
