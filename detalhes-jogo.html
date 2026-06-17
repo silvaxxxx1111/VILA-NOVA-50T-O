@@ -75,7 +75,9 @@ Carregando...
 
 <div class="card">
 <h2>💰 Financeiro</h2>
-<p>Em breve...</p>
+
+<div id="financeiroJogo">
+Carregando financeiro...
 </div>
 
 </div>
@@ -118,7 +120,52 @@ async function carregarJogo(){
         <p>📝 ${data.observacoes || ""}</p>
     `;
 }
+async function carregarFinanceiro(){
 
+    const { data } = await clienteSupabase
+    .from("financeiro")
+    .select("*")
+    .eq("jogo_id", jogoId);
+
+    let receitas = 0;
+    let despesas = 0;
+
+    let html = "";
+
+    data.forEach(item => {
+
+        if(item.tipo === "Receita"){
+            receitas += Number(item.valor);
+        }else{
+            despesas += Number(item.valor);
+        }
+
+    });
+
+    const saldo = receitas - despesas;
+
+    html += `
+        <p><strong>Receitas:</strong> R$ ${receitas.toFixed(2)}</p>
+        <p><strong>Despesas:</strong> R$ ${despesas.toFixed(2)}</p>
+        <p><strong>Saldo:</strong> R$ ${saldo.toFixed(2)}</p>
+        <hr>
+    `;
+
+    data.forEach(item => {
+
+        html += `
+        <p>
+        ${item.tipo} •
+        ${item.categoria}
+        • R$ ${Number(item.valor).toFixed(2)}
+        </p>
+        `;
+
+    });
+
+    document.getElementById("financeiroJogo").innerHTML = html;
+
+}
 // ===================== CARREGAR JOGADORES (SELECT) =====================
 async function carregarJogadores(){
 
@@ -216,7 +263,7 @@ async function listarJogadores(){
 carregarJogo();
 carregarJogadores();
 listarJogadores();
-
+carregarFinanceiro();
 </script>
 
 </body>
