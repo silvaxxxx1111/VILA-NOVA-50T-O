@@ -99,16 +99,27 @@ style="width:100%;margin-top:10px;margin-bottom:10px;"></textarea>
 
 </select>
 
+<h4>Participações</h4>
+
 <input
     type="number"
-    id="quantidade"
+    id="qtd1"
     placeholder="Quantidade de pessoas">
 
 <input
     type="number"
-    id="valorUnitario"
-    placeholder="Valor por pessoa"
-    step="0.01">
+    id="valor1"
+    placeholder="Valor pago por cada pessoa">
+
+<input
+    type="number"
+    id="qtd2"
+    placeholder="Outra quantidade de pessoas">
+
+<input
+    type="number"
+    id="valor2"
+    placeholder="Outro valor por pessoa">
 
 <input
     type="number"
@@ -172,14 +183,21 @@ async function salvarLancamento(){
     const categoria =
     document.getElementById("categoria").value;
 
-    const quantidade =
-    Number(document.getElementById("quantidade").value) || 1;
+    const qtd1 =
+    Number(document.getElementById("qtd1").value) || 0;
 
-    const valor_unitario =
-    Number(document.getElementById("valorUnitario").value) || 0;
+    const valor1 =
+    Number(document.getElementById("valor1").value) || 0;
+
+    const qtd2 =
+    Number(document.getElementById("qtd2").value) || 0;
+
+    const valor2 =
+    Number(document.getElementById("valor2").value) || 0;
 
     const valor =
-    quantidade * valor_unitario;
+    (qtd1 * valor1) +
+    (qtd2 * valor2);
 
     const descricao =
     document.getElementById("descricao").value;
@@ -193,8 +211,8 @@ async function salvarLancamento(){
     .insert([{
         tipo,
         categoria,
-        quantidade,
-        valor_unitario,
+        quantidade: qtd1 + qtd2,
+        valor_unitario: 0,
         valor,
         descricao,
         jogo_id,
@@ -210,13 +228,14 @@ async function salvarLancamento(){
 
     alert("Lançamento salvo");
 
-    document.getElementById("quantidade").value = "";
-    document.getElementById("valorUnitario").value = "";
+    document.getElementById("qtd1").value = "";
+    document.getElementById("valor1").value = "";
+    document.getElementById("qtd2").value = "";
+    document.getElementById("valor2").value = "";
     document.getElementById("valor").value = "";
     document.getElementById("descricao").value = "";
 
     listarFinanceiro();
-
 }
 
 async function listarFinanceiro(){
