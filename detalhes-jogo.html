@@ -130,38 +130,71 @@ async function carregarFinanceiro(){
     let receitas = 0;
     let despesas = 0;
 
-    let html = "";
+    let htmlReceitas = "";
+    let htmlDespesas = "";
 
     data.forEach(item => {
 
         if(item.tipo === "Receita"){
+
             receitas += Number(item.valor);
+
+            htmlReceitas += `
+            <p>
+            🟢 ${item.categoria}
+            • R$ ${Number(item.valor).toFixed(2)}
+            </p>
+
+            ${item.descricao ?
+            `<small>${item.descricao}</small><br>` : ""}
+            `;
+
         }else{
+
             despesas += Number(item.valor);
+
+            htmlDespesas += `
+            <p>
+            🔴 ${item.categoria}
+            • R$ ${Number(item.valor).toFixed(2)}
+            </p>
+
+            ${item.descricao ?
+            `<small>${item.descricao}</small><br>` : ""}
+            `;
+
         }
 
     });
 
     const saldo = receitas - despesas;
 
-    html += `
+    document.getElementById("financeiroJogo").innerHTML = `
+
         <p><strong>Receitas:</strong> R$ ${receitas.toFixed(2)}</p>
+
         <p><strong>Despesas:</strong> R$ ${despesas.toFixed(2)}</p>
-        <p><strong>Saldo:</strong> R$ ${saldo.toFixed(2)}</p>
+
+        <p>
+        <strong>Saldo:</strong>
+        R$ ${saldo.toFixed(2)}
+        </p>
+
         <hr>
+
+        <h3>🟢 RECEITAS</h3>
+
+        ${htmlReceitas || "<p>Nenhuma receita lançada.</p>"}
+
+        <hr>
+
+        <h3>🔴 DESPESAS</h3>
+
+        ${htmlDespesas || "<p>Nenhuma despesa lançada.</p>"}
+
     `;
 
-    data.forEach(item => {
-
-        html += `
-        <p>
-        ${item.tipo} •
-        ${item.categoria}
-        • R$ ${Number(item.valor).toFixed(2)}
-        </p>
-        `;
-
-    });
+}
 
     document.getElementById("financeiroJogo").innerHTML = html;
 
