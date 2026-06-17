@@ -221,8 +221,26 @@ valorCalculado > 0
 ? valorCalculado
 : valorManual;
 
-    const descricao =
-    document.getElementById("descricao").value;
+   let descricao =
+document.getElementById("descricao").value;
+
+if(
+    categoria === "Cota Jogador" ||
+    categoria === "Contribuição" ||
+    categoria === "Passagem"
+){
+
+    descricao = "";
+
+    if(qtd1 > 0){
+        descricao += `${qtd1}x${valor1}`;
+    }
+
+    if(qtd2 > 0){
+        descricao += ` + ${qtd2}x${valor2}`;
+    }
+
+}
 
     const jogo_id =
     document.getElementById("jogo").value || null;
