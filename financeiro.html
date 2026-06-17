@@ -65,20 +65,52 @@ button{
 </select>
 
 <select id="categoria">
-    <option value="Mensalidade">Mensalidade</option>
-    <option value="Arbitragem">Arbitragem</option>
-    <option value="Campo">Campo</option>
-    <option value="Uniforme">Uniforme</option>
-    <option value="Bola">Bola</option>
-    <option value="Água">Água</option>
-    <option value="Transporte">Transporte</option>
-    <option value="Patrocínio">Patrocínio</option>
-    <option value="Outros">Outros</option>
+
+    <optgroup label="RECEITAS">
+        <option value="Cota Jogador">Cota Jogador</option>
+        <option value="Passagem">Passagem</option>
+        <option value="Cota Recebida">Cota Recebida</option>
+        <option value="Contribuição">Contribuição</option>
+        <option value="Patrocínio">Patrocínio</option>
+        <option value="Doação">Doação</option>
+        <option value="Rifa/Bingo">Rifa/Bingo</option>
+        <option value="Outros">Outros</option>
+    </optgroup>
+
+    <optgroup label="DESPESAS">
+        <option value="Água">Água</option>
+        <option value="Frente">Frente</option>
+        <option value="Goleiro">Goleiro</option>
+        <option value="Barca">Barca</option>
+        <option value="Arbitragem">Arbitragem</option>
+        <option value="Transporte">Transporte</option>
+        <option value="Cota Time Adversário">Cota Time Adversário</option>
+        <option value="Outros">Outros</option>
+    </optgroup>
+
 </select>
 
-<input type="number" id="valor" placeholder="Valor">
+<input
+    type="number"
+    id="quantidade"
+    placeholder="Quantidade de pessoas">
 
-<input type="text" id="descricao" placeholder="Descrição">
+<input
+    type="number"
+    id="valorUnitario"
+    placeholder="Valor por pessoa"
+    step="0.01">
+
+<input
+    type="number"
+    id="valor"
+    placeholder="Total"
+    readonly>
+
+<input
+    type="text"
+    id="descricao"
+    placeholder="Descrição">
 
 <select id="jogo"></select>
 
@@ -131,8 +163,14 @@ async function salvarLancamento(){
     const categoria =
     document.getElementById("categoria").value;
 
+    const quantidade =
+    Number(document.getElementById("quantidade").value) || 1;
+
+    const valor_unitario =
+    Number(document.getElementById("valorUnitario").value) || 0;
+
     const valor =
-    Number(document.getElementById("valor").value);
+    quantidade * valor_unitario;
 
     const descricao =
     document.getElementById("descricao").value;
@@ -146,6 +184,8 @@ async function salvarLancamento(){
     .insert([{
         tipo,
         categoria,
+        quantidade,
+        valor_unitario,
         valor,
         descricao,
         jogo_id,
@@ -154,16 +194,15 @@ async function salvarLancamento(){
     }]);
 
     if(error){
-
-    console.log(error);
-    alert(error.message);
-    return;
-
-}
+        console.log(error);
+        alert(error.message);
+        return;
+    }
 
     alert("Lançamento salvo");
 
-    document.getElementById("categoria").value = "";
+    document.getElementById("quantidade").value = "";
+    document.getElementById("valorUnitario").value = "";
     document.getElementById("valor").value = "";
     document.getElementById("descricao").value = "";
 
@@ -221,7 +260,30 @@ async function listarFinanceiro(){
     ` + lista.innerHTML;
 
 }
+function calcularTotal(){
 
+    const quantidade =
+    Number(document.getElementById("quantidade").value) || 0;
+
+    const valorUnitario =
+    Number(document.getElementById("valorUnitario").value) || 0;
+
+    document.getElementById("valor").value =
+    (quantidade * valorUnitario).toFixed(2);
+
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+
+    document
+    .getElementById("quantidade")
+    .addEventListener("input", calcularTotal);
+
+    document
+    .getElementById("valorUnitario")
+    .addEventListener("input", calcularTotal);
+
+});
 carregarJogos();
 listarFinanceiro();
 
