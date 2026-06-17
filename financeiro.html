@@ -81,6 +81,140 @@ Salvar lançamento
 <h3>Lançamentos</h3>
 <div id="listaFinanceiro"></div>
 </div>
+<script>
 
+const supabaseUrl = "https://rjmhbimtgvobhkfhmnkj.supabase.co";
+const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqbWhiaW10Z3ZvYmhrZmhtbmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDQ0MDksImV4cCI6MjA5NzEyMDQwOX0.HD84Bf4ZAkRsbtL1sKjSGRW6SQcbbCnjgM9PlxaRPww";
+
+const clienteSupabase =
+supabase.createClient(supabaseUrl, supabaseKey);
+
+async function carregarJogos(){
+
+    const { data } = await clienteSupabase
+    .from("jogos")
+    .select("*")
+    .order("data_jogo");
+
+    const select = document.getElementById("jogo");
+
+    select.innerHTML =
+    '<option value="">Sem jogo</option>';
+
+    data.forEach(jogo => {
+
+        select.innerHTML += `
+        <option value="${jogo.id}">
+        ${jogo.adversario}
+        </option>
+        `;
+
+    });
+
+}
+
+async function salvarLancamento(){
+
+    const tipo =
+    document.getElementById("tipo").value;
+
+    const categoria =
+    document.getElementById("categoria").value;
+
+    const valor =
+    Number(document.getElementById("valor").value);
+
+    const descricao =
+    document.getElementById("descricao").value;
+
+    const jogo_id =
+    document.getElementById("jogo").value || null;
+
+    const { error } =
+    await clienteSupabase
+    .from("financeiro")
+    .insert([{
+        tipo,
+        categoria,
+        valor,
+        descricao,
+        jogo_id,
+        data_lancamento:
+        new Date().toISOString().split("T")[0]
+    }]);
+
+    if(error){
+
+        console.log(error);
+        alert("Erro ao salvar");
+        return;
+
+    }
+
+    alert("Lançamento salvo");
+
+    document.getElementById("categoria").value = "";
+    document.getElementById("valor").value = "";
+    document.getElementById("descricao").value = "";
+
+    listarFinanceiro();
+
+}
+
+async function listarFinanceiro(){
+
+    const { data } =
+    await clienteSupabase
+    .from("financeiro")
+    .select("*")
+    .order("id", { ascending:false });
+
+    const lista =
+    document.getElementById("listaFinanceiro");
+
+    lista.innerHTML = "";
+
+    let receitas = 0;
+    let despesas = 0;
+
+    data.forEach(item => {
+
+        if(item.tipo === "Receita"){
+            receitas += Number(item.valor);
+        }else{
+            despesas += Number(item.valor);
+        }
+
+        lista.innerHTML += `
+        <div style="
+        border:1px solid #ddd;
+        padding:10px;
+        margin-bottom:10px;
+        border-radius:10px;
+        ">
+        <strong>${item.tipo}</strong><br>
+        Categoria: ${item.categoria}<br>
+        Valor: R$ ${item.valor}<br>
+        ${item.descricao || ""}
+        </div>
+        `;
+
+    });
+
+    lista.innerHTML =
+    `
+    <div style="margin-bottom:20px;">
+    <strong>Receitas:</strong> R$ ${receitas}<br>
+    <strong>Despesas:</strong> R$ ${despesas}<br>
+    <strong>Saldo:</strong> R$ ${receitas - despesas}
+    </div>
+    ` + lista.innerHTML;
+
+}
+
+carregarJogos();
+listarFinanceiro();
+
+</script>
 </body>
 </html>
