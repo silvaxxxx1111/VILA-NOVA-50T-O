@@ -144,9 +144,13 @@ async function carregarFinanceiro(){
     🟢 ${item.categoria}
     • R$ ${Number(item.valor).toFixed(2)}
 
-    <button onclick="excluirLancamento(${item.id})">
-    🗑️ Excluir
-    </button>
+    <button onclick="editarLancamento(${item.id})">
+✏️ Editar
+</button>
+
+<button onclick="excluirLancamento(${item.id})">
+🗑️ Excluir
+</button>
 
     </p>
 
@@ -170,9 +174,13 @@ async function carregarFinanceiro(){
     🔴 ${item.categoria}
     • R$ ${Number(item.valor).toFixed(2)}
 
-    <button onclick="excluirLancamento(${item.id})">
-    🗑️ Excluir
-    </button>
+<button onclick="editarLancamento(${item.id})">
+✏️ Editar
+</button>
+
+<button onclick="excluirLancamento(${item.id})">
+🗑️ Excluir
+</button>
 
     </p>
 
@@ -319,7 +327,35 @@ async function listarJogadores(){
         `;
     });
 }
+async function editarLancamento(id){
 
+    const novoValor =
+    prompt("Digite o novo valor:");
+
+    if(novoValor === null) return;
+
+    const novaDescricao =
+    prompt("Digite a nova descrição:");
+
+    const { error } =
+    await clienteSupabase
+    .from("financeiro")
+    .update({
+        valor: Number(novoValor),
+        descricao: novaDescricao
+    })
+    .eq("id", id);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Lançamento atualizado!");
+
+    carregarFinanceiro();
+
+}
 async function excluirLancamento(id){
 
     const confirmar =
