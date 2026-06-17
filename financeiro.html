@@ -145,11 +145,11 @@ async function salvarLancamento(){
 
     if(error){
 
-        console.log(error);
-        alert("Erro ao salvar");
-        return;
+    console.log(error);
+    alert(error.message);
+    return;
 
-    }
+}
 
     alert("Lançamento salvo");
 
