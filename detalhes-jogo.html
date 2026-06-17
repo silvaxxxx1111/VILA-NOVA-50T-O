@@ -135,62 +135,59 @@ async function carregarFinanceiro(){
 
     data.forEach(item => {
 
-        if(item.tipo === "Receita"){
+       if(item.tipo === "Receita"){
 
-            receitas += Number(item.valor);
+    receitas += Number(item.valor);
 
-           htmlReceitas += `
-<p>
-🟢 ${item.categoria}
-• R$ ${Number(item.valor).toFixed(2)}
+    htmlReceitas += `
+    <p>
+    🟢 ${item.categoria}
+    • R$ ${Number(item.valor).toFixed(2)}
 
-<button onclick="excluirLancamento(${item.id})">
-🗑️ Excluir
-</button>
+    <button onclick="excluirLancamento(${item.id})">
+    🗑️ Excluir
+    </button>
 
-</p>
-`;
+    </p>
 
-            ${item.descricao ?
-`<div style="
-margin-left:28px;
-margin-bottom:10px;
-font-weight:bold;
-color:#555;
-">
-📋 ${item.descricao}
-</div>` : ""}
-            `;
+    ${item.descricao ?
+    `<div style="
+    margin-left:28px;
+    margin-bottom:10px;
+    font-weight:bold;
+    color:#555;
+    ">
+    📋 ${item.descricao}
+    </div>` : ""}
+    `;
 
-        }else{
+}else{
 
-            despesas += Number(item.valor);
+    despesas += Number(item.valor);
 
-           htmlDespesas += `
-<p>
-🔴 ${item.categoria}
-• R$ ${Number(item.valor).toFixed(2)}
+    htmlDespesas += `
+    <p>
+    🔴 ${item.categoria}
+    • R$ ${Number(item.valor).toFixed(2)}
 
-<button onclick="excluirLancamento(${item.id})">
-🗑️ Excluir
-</button>
+    <button onclick="excluirLancamento(${item.id})">
+    🗑️ Excluir
+    </button>
 
-</p>
-`;
+    </p>
 
-            ${item.descricao ?
-`<div style="
-margin-left:28px;
-margin-bottom:10px;
-font-weight:bold;
-color:#555;
-">
-📋 ${item.descricao}
-</div>` : ""}
-            `;
+    ${item.descricao ?
+    `<div style="
+    margin-left:28px;
+    margin-bottom:10px;
+    font-weight:bold;
+    color:#555;
+    ">
+    📋 ${item.descricao}
+    </div>` : ""}
+    `;
 
-        }
-
+}
     });
 
     const saldo = receitas - despesas;
