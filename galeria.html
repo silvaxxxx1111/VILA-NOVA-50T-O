@@ -181,22 +181,41 @@ async function carregarGaleria(){
     data.forEach(foto => {
 
         html += `
-        <div class="foto">
+<div class="foto" style="
+background:white;
+padding:15px;
+border-radius:15px;
+box-shadow:0 2px 10px rgba(0,0,0,.15);
+margin:15px;
+display:inline-block;
+width:320px;
+vertical-align:top;
+">
 
-            <img
-            src="${foto.imagem}"
-            style="
-            width:300px;
-            border-radius:10px;
-            margin:10px;
-            ">
+<img
+src="${foto.imagem}"
+style="
+width:100%;
+border-radius:10px;
+">
 
-            <br>
+<h3 style="
+margin-top:10px;
+color:#c00000;
+">
+⚽ ${foto.categoria || "Sem jogo"}
+</h3>
 
-            <strong>${foto.categoria || ""}</strong>
+<p>
+📅 ${foto.data_foto || ""}
+</p>
 
-        </div>
-        `;
+<p>
+📝 ${foto.descricao || ""}
+</p>
+
+</div>
+`;
     });
 
     document.getElementById("galeria").innerHTML = html;
