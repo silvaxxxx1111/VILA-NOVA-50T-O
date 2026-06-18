@@ -214,13 +214,37 @@ async function enviarFoto(){
 
     const nome =
     Date.now() + "_" + arquivo.name;
+const descricao =
+document.getElementById("descricao").value;
 
+const dataFoto =
+document.getElementById("data_foto").value;
+
+const jogoId =
+document.getElementById("jogo").value || null;
     const { error } =
     await clienteSupabase
     .storage
     .from("galeria")
     .upload(nome, arquivo);
+if(error){
+    alert("Erro ao enviar");
+    console.log(error);
+    return;
+}
 
+const url =
+`${supabaseUrl}/storage/v1/object/public/galeria/${nome}`;
+
+await clienteSupabase
+.from("galeria")
+.insert([{
+    imagem: url,
+    categoria: "Jogo",
+    descricao: descricao,
+    data_foto: dataFoto,
+    jogo_id: jogoId
+}]);
     if(error){
         alert("Erro ao enviar");
         console.log(error);
