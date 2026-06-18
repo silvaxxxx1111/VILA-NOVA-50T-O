@@ -46,7 +46,9 @@ border-radius:10px;
 <input id="data_jogo" type="date">
 
 <input id="local" placeholder="Local">
+<input id="golsVilaNova" type="number" placeholder="Gols Vila Nova">
 
+<input id="golsAdversario" type="number" placeholder="Gols Adversário">
 <select id="tipo_jogo">
 <option value="Casa">🏠 Casa</option>
 <option value="Fora">🚍 Fora</option>
@@ -84,7 +86,13 @@ async function salvarJogo(){
     const uniforme = document.getElementById('uniforme').value;
     const observacoes = document.getElementById('observacoes').value;
 
-    const { error } = await clienteSupabase
+   const gols_vila_nova =
+Number(document.getElementById("golsVilaNova").value) || 0;
+
+const gols_adversario =
+Number(document.getElementById("golsAdversario").value) || 0;
+
+const { error } = await clienteSupabase
     .from('jogos')
     .insert([{
         adversario,
@@ -92,7 +100,9 @@ async function salvarJogo(){
         local,
         tipo_jogo,
         uniforme,
-        observacoes
+        observacoes,
+        gols_vila_nova,
+        gols_adversario
     }]);
 
     if(error){
