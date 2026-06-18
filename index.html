@@ -134,8 +134,12 @@ nav a{
 </div>
 
 <div class="card">
-<h2>Caixa Atual</h2>
-<p>R$ 0,00</p>
+<h2>💰 Caixa Atual</h2>
+
+<div id="caixaAtual">
+Carregando...
+</div>
+
 </div>
 
 <h2 style="margin-bottom:15px;color:#c00000;">
@@ -186,7 +190,43 @@ supabase.createClient(
     supabaseUrl,
     supabaseKey
 );
+async function carregarCaixaAtual(){
 
+    const { data, error } =
+    await clienteSupabase
+    .from("financeiro")
+    .select("tipo, valor");
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    let receitas = 0;
+    let despesas = 0;
+
+    data.forEach(item => {
+
+        if(item.tipo === "Receita"){
+            receitas += Number(item.valor);
+        }else{
+            despesas += Number(item.valor);
+        }
+
+    });
+
+    const saldo = receitas - despesas;
+
+    document.getElementById("caixaAtual").innerHTML = `
+        <h2 style="
+        color:${saldo >= 0 ? "green" : "red"};
+        margin:0;
+        ">
+        R$ ${saldo.toFixed(2)}
+        </h2>
+    `;
+
+}
 async function carregarProximosJogos(){
 
    const { data, error } =
@@ -228,6 +268,7 @@ border-radius:8px;
 }
 
 carregarProximosJogos();
+carregarCaixaAtual();
 
 </script>
 </body>
