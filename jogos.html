@@ -198,6 +198,18 @@ margin-left:10px;
 ">
 ✏️ Resultado
 </button>
+<button onclick="excluirJogo(${jogo.id})"
+style="
+background:#cc0000;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+margin-left:10px;
+">
+🗑️ Excluir
+</button>
 </div>
 `;
     });
@@ -235,6 +247,29 @@ function verDetalhes(id){
     alert("Resultado atualizado!");
 
     carregarJogos();
+}
+    async function excluirJogo(id){
+
+    const confirmar =
+    confirm("Deseja realmente excluir este jogo?");
+
+    if(!confirmar) return;
+
+    const { error } =
+    await clienteSupabase
+    .from("jogos")
+    .delete()
+    .eq("id", id);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Jogo excluído com sucesso!");
+
+    carregarJogos();
+
 }
 carregarJogos();
 
