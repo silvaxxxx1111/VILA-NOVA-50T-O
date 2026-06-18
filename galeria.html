@@ -89,10 +89,28 @@ button{
 
 <br><br>
 
-<button onclick="enviarFoto()">
-Enviar Foto
-</button>
+<select id="jogo">
+<option value="">Sem jogo</option>
+</select>
 
+<br><br>
+
+<input
+type="text"
+id="descricao"
+placeholder="Descrição da foto">
+
+<br><br>
+
+<input
+type="date"
+id="data_foto">
+
+<br><br>
+
+<button onclick="enviarFoto()">
+📤 Enviar Foto
+</button>
 <hr>
 
 </div>
@@ -116,7 +134,28 @@ supabase.createClient(
 supabaseUrl,
 supabaseKey
 );
+async function carregarJogos(){
 
+    const { data } =
+    await clienteSupabase
+    .from("jogos")
+    .select("*")
+    .order("data_jogo");
+
+    const select =
+    document.getElementById("jogo");
+
+    data.forEach(jogo => {
+
+        select.innerHTML += `
+        <option value="${jogo.id}">
+        ${jogo.adversario}
+        </option>
+        `;
+
+    });
+
+}
 const usuarioLogado =
 localStorage.getItem("logado") === "sim";
 
@@ -203,6 +242,7 @@ async function excluirFoto(nome){
     carregarGaleria();
 }
 
+carregarJogos();
 carregarGaleria();
 
 </script>
