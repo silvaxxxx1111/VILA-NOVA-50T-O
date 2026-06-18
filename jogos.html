@@ -186,7 +186,18 @@ cursor:pointer;
 ">
 Ver Detalhes
 </button>
-
+<button onclick="editarResultado(${jogo.id})"
+style="
+background:#0066cc;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+margin-left:10px;
+">
+✏️ Resultado
+</button>
 </div>
 `;
     });
@@ -194,6 +205,36 @@ Ver Detalhes
 }
 function verDetalhes(id){
     window.location.href = "detalhes-jogo.html?id=" + id;
+}
+    async function editarResultado(id){
+
+    const golsVilaNova =
+    prompt("Gols do Vila Nova:");
+
+    if(golsVilaNova === null) return;
+
+    const golsAdversario =
+    prompt("Gols do Adversário:");
+
+    if(golsAdversario === null) return;
+
+    const { error } =
+    await clienteSupabase
+    .from("jogos")
+    .update({
+        gols_vila_nova: Number(golsVilaNova),
+        gols_adversario: Number(golsAdversario)
+    })
+    .eq("id", id);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Resultado atualizado!");
+
+    carregarJogos();
 }
 carregarJogos();
 
