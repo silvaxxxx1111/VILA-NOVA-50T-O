@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Área da Comissão</title>
+
+<style>
+
+body{
+font-family:Arial,sans-serif;
+background:#f5f5f5;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+.box{
+background:white;
+padding:30px;
+border-radius:15px;
+box-shadow:0 2px 15px rgba(0,0,0,.2);
+width:300px;
+}
+
+input{
+width:100%;
+padding:10px;
+margin-top:10px;
+margin-bottom:15px;
+}
+
+button{
+width:100%;
+padding:12px;
+background:#c00000;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="box">
+
+<h2>🔒 Área da Comissão</h2>
+
+<input
+type="text"
+id="usuario"
+placeholder="Usuário">
+
+<input
+type="password"
+id="senha"
+placeholder="Senha">
+
+<button onclick="login()">
+Entrar
+</button>
+
+</div>
+
+<script>
+
+function login(){
+
+const usuario =
+document.getElementById("usuario").value;
+
+const senha =
+document.getElementById("senha").value;
+
+if(
+usuario === "comissao"
+&&
+senha === "vilanova2026"
+){
+
+localStorage.setItem(
+"logado",
+"sim"
+);
+
+window.location.href =
+"index.html";
+
+}else{
+
+alert("Usuário ou senha inválidos");
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
