@@ -40,7 +40,7 @@ border-radius:10px;
 <body>
 
 <h1>⚽ Cadastro de Jogos</h1>
-
+<div id="areaCadastroJogo">
 <input id="adversario" placeholder="Adversário">
 
 <input id="data_jogo" type="date">
@@ -64,7 +64,7 @@ border-radius:10px;
 <textarea id="observacoes" placeholder="Observações"></textarea>
 
 <button onclick="salvarJogo()">Salvar Jogo</button>
-
+</div>
 <hr>
 
 <h2>Jogos Cadastrados</h2>
@@ -78,6 +78,20 @@ const supabaseKey = "sb_publishable_ub_L3pyIFYP3sCjXb_kfpA_MtyRM5rY";
 const clienteSupabase = supabase.createClient(supabaseUrl, supabaseKey);
 const usuarioLogado =
 localStorage.getItem("logado") === "sim";
+    window.addEventListener("load", () => {
+
+    if(!usuarioLogado){
+
+        const area =
+        document.getElementById("areaCadastroJogo");
+
+        if(area){
+            area.style.display = "none";
+        }
+
+    }
+
+});
 async function salvarJogo(){
 
     const adversario = document.getElementById('adversario').value;
