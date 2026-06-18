@@ -213,7 +213,20 @@ color:#c00000;
 <p>
 📝 ${foto.descricao || ""}
 </p>
-
+${usuarioLogado ? `
+<button onclick="excluirFoto(${foto.id})"
+style="
+background:#d60000;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:6px;
+cursor:pointer;
+margin-top:10px;
+">
+🗑️ Excluir
+</button>
+` : ""}
 </div>
 `;
     });
@@ -293,7 +306,28 @@ async function excluirFoto(nome){
 
     carregarGaleria();
 }
+async function excluirFoto(id){
 
+    if(!confirm("Deseja excluir esta foto?")){
+        return;
+    }
+
+    const { error } =
+    await clienteSupabase
+    .from("galeria")
+    .delete()
+    .eq("id", id);
+
+    if(error){
+        alert("Erro ao excluir foto");
+        console.log(error);
+        return;
+    }
+
+    alert("Foto excluída!");
+
+    carregarGaleria();
+}
 carregarJogos();
 carregarGaleria();
 
