@@ -222,7 +222,10 @@ async function carregarCaixaAtual(){
         color:${saldo >= 0 ? "green" : "red"};
         margin:0;
         ">
-        R$ ${saldo.toFixed(2)}
+        ${saldo.toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL"
+})}
         </h2>
     `;
 
