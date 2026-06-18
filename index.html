@@ -129,8 +129,12 @@ nav a{
 </div>
 
 <div class="card">
-<h2>Último Resultado</h2>
-<p>Em breve...</p>
+<h2>⚽ Último Resultado</h2>
+
+<div id="ultimoResultado">
+Carregando...
+</div>
+
 </div>
 
 <div class="card">
@@ -228,6 +232,54 @@ async function carregarCaixaAtual(){
     `;
 
 }
+    async function carregarUltimoResultado(){
+
+    const { data, error } =
+    await clienteSupabase
+    .from("jogos")
+    .select("*")
+    .not("gols_vila_nova", "is", null)
+    .not("gols_adversario", "is", null)
+    .order("data_jogo", { ascending:false })
+    .limit(1);
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    if(!data || data.length === 0){
+
+        document.getElementById("ultimoResultado").innerHTML =
+        "Nenhum resultado cadastrado.";
+
+        return;
+    }
+
+    const jogo = data[0];
+
+    let resultado = "";
+
+    if(jogo.gols_vila_nova > jogo.gols_adversario){
+        resultado = "🏆 Vitória";
+    }
+    else if(jogo.gols_vila_nova < jogo.gols_adversario){
+        resultado = "❌ Derrota";
+    }
+    else{
+        resultado = "🤝 Empate";
+    }
+
+    document.getElementById("ultimoResultado").innerHTML = `
+        <p style="font-size:20px;font-weight:bold;color:#c00000;">
+        Vila Nova ${jogo.gols_vila_nova} x ${jogo.gols_adversario} ${jogo.adversario}
+        </p>
+
+        <p>${resultado}</p>
+
+        <p>📅 ${jogo.data_jogo}</p>
+    `;
+}
 async function carregarProximosJogos(){
 
    const { data, error } =
@@ -322,6 +374,7 @@ async function carregarEstatisticas(){
 carregarProximosJogos();
 carregarCaixaAtual();
 carregarEstatisticas();
+carregarUltimoResultado();
 </script>
 </body>
 </html>
