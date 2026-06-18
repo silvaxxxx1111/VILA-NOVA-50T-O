@@ -98,6 +98,17 @@ const clienteSupabase = window.supabase.createClient(
 );
 const usuarioLogado =
 localStorage.getItem("logado") === "sim";
+    window.addEventListener("load", () => {
+
+    if(!usuarioLogado){
+
+        document.getElementById(
+        "btnAdicionarJogador"
+        ).style.display = "none";
+
+    }
+
+});
 async function carregarJogadores() {
 
    const { data, error } = await clienteSupabase
