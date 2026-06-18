@@ -389,6 +389,7 @@ ${item.descricao || ""}
 
 <br><br>
 
+${usuarioLogado ? `
 <button onclick="excluirLancamento(${item.id})"
 style="
 background:#cc0000;
@@ -400,6 +401,7 @@ cursor:pointer;
 ">
 🗑️ Excluir
 </button>
+` : ''}
 
 </div>
 `;
