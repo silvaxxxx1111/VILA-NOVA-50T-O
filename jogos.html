@@ -76,7 +76,8 @@ const supabaseUrl = "https://rjmhbimtgvobhkfhmnkj.supabase.co";
 
 const supabaseKey = "sb_publishable_ub_L3pyIFYP3sCjXb_kfpA_MtyRM5rY";
 const clienteSupabase = supabase.createClient(supabaseUrl, supabaseKey);
-
+const usuarioLogado =
+localStorage.getItem("logado") === "sim";
 async function salvarJogo(){
 
     const adversario = document.getElementById('adversario').value;
