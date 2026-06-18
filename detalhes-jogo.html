@@ -47,7 +47,7 @@ Carregando...
 
 <div class="card">
 <h2>👥 Jogadores</h2>
-
+<div id="areaCadastroJogador">
 <select id="jogadorSelect">
 <option value="">Selecione um jogador</option>
 </select>
@@ -66,12 +66,19 @@ Carregando...
 <input id="observacaoJogador" placeholder="Observação">
 <br><br>
 
-<button onclick="adicionarJogador()">Adicionar Jogador</button>
+<button onclick="adicionarJogador()">
+Adicionar Jogador
+</button>
+
+</div>
 
 <hr>
 
 <div id="listaJogadores"></div>
 </div>
+<hr>
+
+
 
 <div class="card">
 <h2>💰 Financeiro</h2>
@@ -88,7 +95,23 @@ const supabaseUrl = "https://rjmhbimtgvobhkfhmnkj.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJqbWhiaW10Z3ZvYmhrZmhtbmtqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE1NDQ0MDksImV4cCI6MjA5NzEyMDQwOX0.HD84Bf4ZAkRsbtL1sKjSGRW6SQcbbCnjgM9PlxaRPww"; // <-- coloque sua key correta
 
 const clienteSupabase = supabase.createClient(supabaseUrl, supabaseKey);
+const usuarioLogado =
+localStorage.getItem("logado") === "sim";
 
+window.addEventListener("load", () => {
+
+    if(!usuarioLogado){
+
+        const area =
+        document.getElementById("areaCadastroJogador");
+
+        if(area){
+            area.style.display = "none";
+        }
+
+    }
+
+});
 // ===================== ID DO JOGO =====================
 const params = new URLSearchParams(window.location.search);
 const jogoId = Number(params.get("id"));
