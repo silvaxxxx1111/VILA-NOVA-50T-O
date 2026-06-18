@@ -136,42 +136,19 @@ supabaseKey
 );
 async function carregarJogos(){
 
-    const { data } =
+    const { data, error } =
     await clienteSupabase
     .from("jogos")
     .select("*")
-    .order("data_jogo");
+    .order("data_jogo", { ascending:false });
 
-    const select =
-    document.getElementById("jogo");
-
-    data.forEach(jogo => {
-
-        select.innerHTML += `
-        <option value="${jogo.id}">
-        ${jogo.adversario}
-        </option>
-        `;
-
-    });
-
-}
-const usuarioLogado =
-localStorage.getItem("logado") === "sim";
-
-if(!usuarioLogado){
-    document.getElementById("areaUpload").style.display = "none";
-}
-async function carregarJogos(){
-
-    const { data } =
-    await clienteSupabase
-    .from("jogos")
-    .select("*")
-    .order("data", { ascending:false });
+    console.log(data);
+    console.log(error);
 
     let html =
     '<option value="">Sem jogo</option>';
+
+    if(!data) return;
 
     data.forEach(jogo => {
 
