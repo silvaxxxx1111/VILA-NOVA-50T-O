@@ -128,36 +128,34 @@ async function carregarGaleria(){
 
     const { data, error } =
     await clienteSupabase
-    .storage
     .from("galeria")
-    .list();
-
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
+    .select("*")
+    .order("id", { ascending:false });
 
     if(error){
-        document.getElementById("galeria").innerHTML =
-        "ERRO: " + error.message;
-        return;
-    }
-
-    if(!data || data.length === 0){
-        document.getElementById("galeria").innerHTML =
-        "Nenhuma foto encontrada";
+        console.log(error);
         return;
     }
 
     let html = "";
 
-    data.forEach(arquivo => {
-
-        const url =
-        `${supabaseUrl}/storage/v1/object/public/galeria/${arquivo.name}`;
+    data.forEach(foto => {
 
         html += `
         <div class="foto">
-            <img src="${url}">
-            <p>${arquivo.name}</p>
+
+            <img
+            src="${foto.imagem}"
+            style="
+            width:300px;
+            border-radius:10px;
+            margin:10px;
+            ">
+
+            <br>
+
+            <strong>${foto.categoria || ""}</strong>
+
         </div>
         `;
     });
