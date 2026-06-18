@@ -225,6 +225,7 @@ color:#c00000;
 📝 ${foto.descricao || ""}
 </p>
 
+${usuarioLogado ? `
 <button onclick="excluirFoto(${foto.id})"
 style="
 background:#d60000;
@@ -237,6 +238,7 @@ margin-top:10px;
 ">
 🗑️ Excluir
 </button>
+` : ""}
 
 </div>
 `;
