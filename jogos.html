@@ -248,26 +248,35 @@ function verDetalhes(id){
 
     carregarJogos();
 }
-   async function excluirJogo(id){
+  async function excluirJogo(id){
 
-    console.log("Tentando excluir jogo:", id);
+    const confirmar =
+    confirm("Deseja realmente excluir este jogo?");
 
-    const { data, error } =
+    if(!confirmar) return;
+
+    await clienteSupabase
+    .from("jogadores_jogo")
+    .delete()
+    .eq("jogo_id", id);
+
+    await clienteSupabase
+    .from("financeiro")
+    .delete()
+    .eq("jogo_id", id);
+
+    const { error } =
     await clienteSupabase
     .from("jogos")
     .delete()
-    .eq("id", id)
-    .select();
-
-    console.log("DATA:", data);
-    console.log("ERROR:", error);
+    .eq("id", id);
 
     if(error){
         alert(error.message);
         return;
     }
 
-    alert("Jogo excluído!");
+    alert("Jogo excluído com sucesso!");
 
     carregarJogos();
 }
