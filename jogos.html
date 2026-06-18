@@ -129,11 +129,15 @@ async function salvarJogo(){
     const uniforme = document.getElementById('uniforme').value;
     const observacoes = document.getElementById('observacoes').value;
 
-   const gols_vila_nova =
-Number(document.getElementById("golsVilaNova").value) || 0;
+  const gols_vila_nova =
+document.getElementById("golsVilaNova").value === ""
+? null
+: Number(document.getElementById("golsVilaNova").value);
 
 const gols_adversario =
-Number(document.getElementById("golsAdversario").value) || 0;
+document.getElementById("golsAdversario").value === ""
+? null
+: Number(document.getElementById("golsAdversario").value);
 
 const { error } = await clienteSupabase
     .from('jogos')
@@ -198,6 +202,8 @@ box-shadow:0 2px 10px rgba(0,0,0,.15);
 
 <p>👕 ${jogo.uniforme}</p>
 ${jogo.gols_vila_nova !== null && jogo.gols_adversario !== null ? `
+${jogo.gols_vila_nova != null && jogo.gols_adversario != null ? `
+
 <hr>
 
 <p style="
@@ -217,7 +223,19 @@ jogo.gols_vila_nova > jogo.gols_adversario
 : '🤝 Empate'
 }
 </p>
-` : ''}
+
+` : `
+
+<hr>
+
+<p style="
+font-weight:bold;
+color:#0066cc;
+">
+📅 Jogo agendado
+</p>
+
+`}
 <button onclick="verDetalhes(${jogo.id})"
 style="
 background:#c00000;
