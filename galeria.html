@@ -126,11 +126,26 @@ if(!usuarioLogado){
 
 async function carregarGaleria(){
 
-    const { data } =
+    const { data, error } =
     await clienteSupabase
     .storage
     .from("galeria")
     .list();
+
+    console.log("DATA:", data);
+    console.log("ERROR:", error);
+
+    if(error){
+        document.getElementById("galeria").innerHTML =
+        "ERRO: " + error.message;
+        return;
+    }
+
+    if(!data || data.length === 0){
+        document.getElementById("galeria").innerHTML =
+        "Nenhuma foto encontrada";
+        return;
+    }
 
     let html = "";
 
@@ -141,16 +156,8 @@ async function carregarGaleria(){
 
         html += `
         <div class="foto">
-
-        <img src="${url}">
-
-        ${usuarioLogado ? `
-        <br><br>
-        <button onclick="excluirFoto('${arquivo.name}')">
-        🗑️ Excluir
-        </button>
-        ` : ""}
-
+            <img src="${url}">
+            <p>${arquivo.name}</p>
         </div>
         `;
     });
