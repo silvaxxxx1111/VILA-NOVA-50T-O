@@ -119,9 +119,11 @@ nav a{
 <div class="container">
 
 <div class="card">
-<h2>📅 Próximos Jogos</h2>
+<h2 style="color:#c00000;">
+📅 Próximos Jogos
+</h2>
 
-<div id="proximosJogos">
+<div id="proximosJogos"></div>
 Carregando jogos...
 </div>
 
@@ -200,12 +202,21 @@ async function carregarProximosJogos(){
 
     data.forEach(jogo => {
 
-        html += `
-        <p>
-            <strong>${jogo.data_jogo}</strong>
-            - Vila Nova x ${jogo.adversario}
-        </p>
-        `;
+       html += `
+<div style="
+background:#f5f5f5;
+padding:12px;
+margin-bottom:10px;
+border-left:5px solid #c00000;
+border-radius:8px;
+">
+
+    <strong>📅 ${jogo.data_jogo}</strong><br>
+
+    ⚽ Vila Nova x ${jogo.adversario}
+
+</div>
+`;
 
     });
 
