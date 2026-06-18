@@ -40,21 +40,26 @@ h1{
 }
 
 #galeria{
-    display:grid;
-    grid-template-columns:repeat(auto-fill,minmax(250px,1fr));
+    display:flex;
+    flex-wrap:wrap;
     gap:20px;
+    justify-content:center;
 }
 
 .foto{
     background:white;
-    padding:10px;
-    border-radius:10px;
-    box-shadow:0 2px 5px rgba(0,0,0,.15);
+    padding:15px;
+    border-radius:15px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+    width:340px;
+    transition:0.3s;
 }
-
+.foto:hover{
+    transform:translateY(-5px);
+}
 .foto img{
     width:100%;
-    border-radius:8px;
+    border-radius:10px;
 }
 
 button{
