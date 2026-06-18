@@ -154,7 +154,27 @@ box-shadow:0 2px 10px rgba(0,0,0,.15);
 <p>${jogo.tipo_jogo === 'Casa' ? '🏠 Casa' : '🚌 Fora'}</p>
 
 <p>👕 ${jogo.uniforme}</p>
+${jogo.gols_vila_nova !== null && jogo.gols_adversario !== null ? `
+<hr>
 
+<p style="
+font-size:20px;
+font-weight:bold;
+color:#c00000;
+">
+⚽ Vila Nova ${jogo.gols_vila_nova} x ${jogo.gols_adversario} ${jogo.adversario}
+</p>
+
+<p style="font-weight:bold;">
+${
+jogo.gols_vila_nova > jogo.gols_adversario
+? '🏆 Vitória'
+: jogo.gols_vila_nova < jogo.gols_adversario
+? '❌ Derrota'
+: '🤝 Empate'
+}
+</p>
+` : ''}
 <button onclick="verDetalhes(${jogo.id})"
 style="
 background:#c00000;
