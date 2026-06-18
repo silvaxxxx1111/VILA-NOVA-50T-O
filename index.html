@@ -188,17 +188,17 @@ supabase.createClient(
 
 async function carregarProximosJogos(){
 
-    const { data } =
+   const { data, error } =
 await clienteSupabase
 .from("jogos")
 .select("*")
 .order("data_jogo", { ascending: true })
 .limit(3);
 
-    if(error){
-        console.log(error);
-        return;
-    }
+if(error){
+    console.log(error);
+    return;
+}
 
     let html = "";
 
