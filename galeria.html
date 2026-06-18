@@ -139,6 +139,12 @@ supabase.createClient(
 supabaseUrl,
 supabaseKey
 );
+    const usuarioLogado =
+localStorage.getItem("logado") === "sim";
+
+if(!usuarioLogado){
+    document.getElementById("areaUpload").style.display = "none";
+}
 async function carregarJogos(){
 
     const { data, error } =
