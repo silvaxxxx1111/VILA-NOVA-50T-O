@@ -115,7 +115,7 @@ nav a{
   <a href="jogos.html">⚽ Jogos</a>
   <a href="jogadores.html">👥 Jogadores</a>
   <a href="financeiro.html">💰 Financeiro</a>
-    <a href="login.html">🔒 Comissão</a>
+    <span id="menuComissao"></span>
 </nav>
 <div class="container">
 
@@ -376,6 +376,35 @@ carregarProximosJogos();
 carregarCaixaAtual();
 carregarEstatisticas();
 carregarUltimoResultado();
+    const usuarioLogado =
+localStorage.getItem("logado") === "sim";
+
+function sair(){
+
+    localStorage.removeItem("logado");
+
+    alert("Você saiu da comissão.");
+
+    window.location.href = "index.html";
+}
+
+if(usuarioLogado){
+
+    document.getElementById("menuComissao").innerHTML = `
+    <a href="#" onclick="sair()">
+    🚪 Sair
+    </a>
+    `;
+
+}else{
+
+    document.getElementById("menuComissao").innerHTML = `
+    <a href="login.html">
+    🔒 Comissão
+    </a>
+    `;
+
+}
 </script>
 </body>
 </html>
