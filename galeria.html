@@ -255,20 +255,29 @@ if(error){
 const url =
 `${supabaseUrl}/storage/v1/object/public/galeria/${nome}`;
 
+const nomeJogo =
+document.getElementById("jogo")
+.options[
+document.getElementById("jogo").selectedIndex
+].text;
+
+const { error: erroBanco } =
 await clienteSupabase
 .from("galeria")
 .insert([{
     imagem: url,
-    categoria: "Jogo",
+    categoria: nomeJogo,
     descricao: descricao,
     data_foto: dataFoto,
     jogo_id: jogoId
 }]);
-    if(error){
-        alert("Erro ao enviar");
-        console.log(error);
-        return;
-    }
+
+if(erroBanco){
+    console.log(erroBanco);
+    alert("Erro ao salvar dados da foto");
+    return;
+}
+    
 
     carregarGaleria();
 }
