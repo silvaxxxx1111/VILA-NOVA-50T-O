@@ -162,7 +162,30 @@ localStorage.getItem("logado") === "sim";
 if(!usuarioLogado){
     document.getElementById("areaUpload").style.display = "none";
 }
+async function carregarJogos(){
 
+    const { data } =
+    await clienteSupabase
+    .from("jogos")
+    .select("*")
+    .order("data", { ascending:false });
+
+    let html =
+    '<option value="">Sem jogo</option>';
+
+    data.forEach(jogo => {
+
+        html += `
+        <option value="${jogo.id}">
+        ${jogo.adversario}
+        </option>
+        `;
+
+    });
+
+    document.getElementById("jogo").innerHTML =
+    html;
+}
 async function carregarGaleria(){
 
     const { data, error } =
