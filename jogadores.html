@@ -75,7 +75,10 @@ h1{
 <div class="container">
 
 <h1>👥 Jogadores</h1>
-<button class="btn-add" onclick="adicionarJogador()">
+<button
+id="btnAdicionarJogador"
+class="btn-add"
+onclick="adicionarJogador()">
 ➕ Adicionar Jogador
 </button>
 <div id="lista-jogadores">
@@ -93,7 +96,8 @@ const clienteSupabase = window.supabase.createClient(
   supabaseUrl,
   supabaseKey
 );
-
+const usuarioLogado =
+localStorage.getItem("logado") === "sim";
 async function carregarJogadores() {
 
    const { data, error } = await clienteSupabase
@@ -117,9 +121,11 @@ async function carregarJogadores() {
 
         <br><br>
 
-        <button onclick="editarJogador(${jogador.id}, '${jogador.nome}')">
-            ✏️ Editar
-        </button>
+       ${usuarioLogado ? `
+<button onclick="editarJogador(${jogador.id}, '${jogador.nome}')">
+    ✏️ Editar
+</button>
+` : ''}
     </div>
     `;
 });
@@ -143,7 +149,13 @@ async function adicionarJogador(){
         console.log(error);
         return;
     }
+if(!usuarioLogado){
 
+    document.getElementById(
+    "btnAdicionarJogador"
+    ).style.display = "none";
+
+}
     carregarJogadores();
 }
     async function editarJogador(id, nomeAtual){
