@@ -150,24 +150,22 @@ Estatísticas
 
 <div class="stat">
 <h3>Jogos</h3>
-<p>0</p>
+<p id="totalJogos">0</p>
 </div>
 
 <div class="stat">
 <h3>Vitórias</h3>
-<p>0</p>
+<p id="totalVitorias">0</p>
 </div>
 
 <div class="stat">
 <h3>Empates</h3>
-<p>0</p>
+<p id="totalEmpates">0</p>
 </div>
 
 <div class="stat">
 <h3>Derrotas</h3>
-<p>0</p>
-</div>
-
+<p id="totalDerrotas">0</p>
 </div>
 
 </div>
@@ -269,10 +267,61 @@ border-radius:8px;
     document.getElementById("proximosJogos").innerHTML = html;
 
 }
+async function carregarEstatisticas(){
 
+    const { data, error } =
+    await clienteSupabase
+    .from("jogos")
+    .select("gols_vila_nova, gols_adversario");
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    let jogos = 0;
+    let vitorias = 0;
+    let empates = 0;
+    let derrotas = 0;
+
+    data.forEach(jogo => {
+
+        const golsVN =
+        Number(jogo.gols_vila_nova);
+
+        const golsAdv =
+        Number(jogo.gols_adversario);
+
+        if(
+            jogo.gols_vila_nova === null ||
+            jogo.gols_adversario === null
+        ){
+            return;
+        }
+
+        jogos++;
+
+        if(golsVN > golsAdv){
+            vitorias++;
+        }
+        else if(golsVN < golsAdv){
+            derrotas++;
+        }
+        else{
+            empates++;
+        }
+
+    });
+
+    document.getElementById("totalJogos").innerText = jogos;
+    document.getElementById("totalVitorias").innerText = vitorias;
+    document.getElementById("totalEmpates").innerText = empates;
+    document.getElementById("totalDerrotas").innerText = derrotas;
+
+}
 carregarProximosJogos();
 carregarCaixaAtual();
-
+carregarEstatisticas();
 </script>
 </body>
 </html>
