@@ -311,6 +311,29 @@ function controlarCampos(){
 document
 .getElementById("categoria")
 .addEventListener("change", controlarCampos);
+    async function excluirLancamento(id){
+
+    const confirmar =
+    confirm("Deseja excluir este lançamento?");
+
+    if(!confirmar) return;
+
+    const { error } =
+    await clienteSupabase
+    .from("financeiro")
+    .delete()
+    .eq("id", id);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Lançamento excluído!");
+
+    listarFinanceiro();
+
+}
 async function listarFinanceiro(){
 
     const { data } =
@@ -335,19 +358,35 @@ async function listarFinanceiro(){
             despesas += Number(item.valor);
         }
 
-        lista.innerHTML += `
-        <div style="
-        border:1px solid #ddd;
-        padding:10px;
-        margin-bottom:10px;
-        border-radius:10px;
-        ">
-        <strong>${item.tipo}</strong><br>
-        Categoria: ${item.categoria}<br>
-        Valor: R$ ${item.valor}<br>
-        ${item.descricao || ""}
-        </div>
-        `;
+       lista.innerHTML += `
+<div style="
+border:1px solid #ddd;
+padding:10px;
+margin-bottom:10px;
+border-radius:10px;
+">
+
+<strong>${item.tipo}</strong><br>
+Categoria: ${item.categoria}<br>
+Valor: R$ ${item.valor}<br>
+${item.descricao || ""}
+
+<br><br>
+
+<button onclick="excluirLancamento(${item.id})"
+style="
+background:#cc0000;
+color:white;
+border:none;
+padding:8px 12px;
+border-radius:8px;
+cursor:pointer;
+">
+🗑️ Excluir
+</button>
+
+</div>
+`;
 
     });
 
