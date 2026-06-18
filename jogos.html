@@ -187,6 +187,8 @@ cursor:pointer;
 ">
 Ver Detalhes
 </button>
+${usuarioLogado ? `
+
 <button onclick="editarResultado(${jogo.id})"
 style="
 background:#0066cc;
@@ -199,6 +201,7 @@ margin-left:10px;
 ">
 ✏️ Resultado
 </button>
+
 <button onclick="excluirJogo(${jogo.id})"
 style="
 background:#cc0000;
@@ -211,6 +214,8 @@ margin-left:10px;
 ">
 🗑️ Excluir
 </button>
+
+` : ''}
 </div>
 `;
     });
