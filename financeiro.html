@@ -58,7 +58,7 @@ button{
 
 <div class="card">
 <h3>Novo lançamento</h3>
-
+<div id="areaCadastroFinanceiro">
 <select id="tipo">
     <option value="Receita">Receita</option>
     <option value="Despesa">Despesa</option>
@@ -164,7 +164,23 @@ const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZS
 
 const clienteSupabase =
 supabase.createClient(supabaseUrl, supabaseKey);
+const usuarioLogado =
+localStorage.getItem("logado") === "sim";
 
+window.addEventListener("load", () => {
+
+    if(!usuarioLogado){
+
+        const area =
+        document.getElementById("areaCadastroFinanceiro");
+
+        if(area){
+            area.style.display = "none";
+        }
+
+    }
+
+});
 async function carregarJogos(){
 
     const { data } = await clienteSupabase
