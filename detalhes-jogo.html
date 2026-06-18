@@ -167,13 +167,15 @@ async function carregarFinanceiro(){
     🟢 ${item.categoria}
     • R$ ${Number(item.valor).toFixed(2)}
 
-    <button onclick="editarLancamento(${item.id})">
+   ${usuarioLogado ? `
+<button onclick="editarLancamento(${item.id})">
 ✏️ Editar
 </button>
 
 <button onclick="excluirLancamento(${item.id})">
 🗑️ Excluir
 </button>
+` : ''}>
 
     </p>
 
