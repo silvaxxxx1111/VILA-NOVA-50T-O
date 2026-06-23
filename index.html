@@ -357,8 +357,28 @@ if(error){
 
 if(!data || data.length === 0){
 
-    document.getElementById("proximoJogo").innerHTML =
-    "Nenhum jogo agendado.";
+    document.getElementById("proximoJogo").innerHTML = `
+<div style="
+text-align:center;
+padding:40px 20px;
+">
+
+<h2 style="
+color:#c00000;
+margin-bottom:15px;
+">
+📅 AGUARDANDO NOVO JOGO
+</h2>
+
+<p style="
+font-size:18px;
+color:#666;
+">
+Nenhum amistoso cadastrado.
+</p>
+
+</div>
+`;
 
     return;
 }
