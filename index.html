@@ -219,7 +219,17 @@ async function carregarCaixaAtual(){
 
     });
 
-    const saldo = receitas - despesas;
+   const { data: config } =
+await clienteSupabase
+.from("configuracoes")
+.select("*")
+.limit(1)
+.single();
+
+const saldoInicial =
+config ? Number(config.saldo_inicial) : 0;
+
+const saldo = saldoInicial + receitas - despesas;
 
     document.getElementById("caixaAtual").innerHTML = `
         <h2 style="
