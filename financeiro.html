@@ -188,6 +188,19 @@ style="width:100%;margin-top:10px;margin-bottom:10px;">
 <button onclick="salvarLancamento()">
 Salvar lançamento
 </button>
+    <button onclick="fecharPrestacao()"
+style="
+background:#006400;
+color:white;
+border:none;
+padding:10px 15px;
+border-radius:8px;
+cursor:pointer;
+margin-left:10px;
+font-weight:bold;
+">
+📋 Fechar Prestação
+</button>
 </div>
 
 <div class="card">
@@ -568,6 +581,77 @@ R$ ${saldoInicial + receitas - despesas}
 
 </div>
 ` + lista.innerHTML;
+}
+    async function fecharPrestacao(){
+
+    const jogoId =
+    document.getElementById("jogo").value;
+
+    if(!jogoId){
+        alert("Selecione um jogo.");
+        return;
+    }
+
+    const { data: jogo } =
+    await clienteSupabase
+    .from("jogos")
+    .select("*")
+    .eq("id", jogoId)
+    .single();
+
+    const { data: lancamentos } =
+    await clienteSupabase
+    .from("financeiro")
+    .select("*")
+    .eq("jogo_id", jogoId);
+
+    let receitas = 0;
+    let despesas = 0;
+
+    lancamentos.forEach(item => {
+
+        if(item.tipo === "Receita"){
+            receitas += Number(item.valor);
+        }else{
+            despesas += Number(item.valor);
+        }
+
+    });
+
+    const saldo = receitas - despesas;
+
+    const { data: config } =
+    await clienteSupabase
+    .from("configuracoes")
+    .select("*")
+    .limit(1)
+    .single();
+
+    const caixaAnterior =
+    Number(config?.saldo_inicial || 0);
+
+    const caixaAtual =
+    caixaAnterior + saldo;
+
+    const { error } =
+    await clienteSupabase
+    .from("prestacoes")
+    .insert([{
+        jogo_id: jogoId,
+        adversario: jogo.adversario,
+        receitas,
+        despesas,
+        saldo,
+        caixa_anterior: caixaAnterior,
+        caixa_atual: caixaAtual
+    }]);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Prestação salva com sucesso!");
 
 }
 function calcularTotal(){
