@@ -442,9 +442,7 @@ async function listarFinanceiro(){
     const { data } =
     await clienteSupabase
     .from("financeiro")
-    .select("*")
-    .order("id", { ascending:false });
-
+    .select
     const lista =
     document.getElementById("listaFinanceiro");
 
