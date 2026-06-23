@@ -442,7 +442,12 @@ async function listarFinanceiro(){
     const { data } =
 await clienteSupabase
 .from("financeiro")
-.select("*")
+.select(`
+*,
+jogos (
+    adversario
+)
+`)
 .order("id", { ascending:false });
     const lista =
     document.getElementById("listaFinanceiro");
@@ -483,6 +488,9 @@ border-radius:10px;
 <strong>${item.tipo}</strong><br>
 Categoria: ${item.categoria}<br>
 Valor: R$ ${item.valor}<br>
+
+Jogo ID: ${item.jogo_id || "Sem jogo"}<br>
+
 ${item.descricao || ""}
 
 <br><br>
