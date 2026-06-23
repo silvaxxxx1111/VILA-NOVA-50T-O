@@ -77,6 +77,20 @@ style="color:#ffd700;">
 <div class="container">
 
 <h1>Financeiro</h1>
+    <div class="card" id="cardCaixa">
+
+<h3>💰 Caixa Atual</h3>
+
+<input
+type="number"
+id="saldoInicial"
+placeholder="Valor do caixa">
+
+<button onclick="salvarSaldoInicial()">
+Salvar Caixa
+</button>
+
+</div>
 <div class="card">
 <h3>Novo lançamento</h3>
 <div id="areaCadastroFinanceiro">
@@ -314,6 +328,47 @@ if(
 
     listarFinanceiro();
 }
+    async function carregarSaldoInicial(){
+
+    const { data } =
+    await clienteSupabase
+    .from("configuracoes")
+    .select("*")
+    .limit(1)
+    .single();
+
+    if(data){
+
+        document.getElementById("saldoInicial").value =
+        data.saldo_inicial || 0;
+
+    }
+
+}
+
+async function salvarSaldoInicial(){
+
+    const valor =
+    Number(document.getElementById("saldoInicial").value) || 0;
+
+    const { error } =
+    await clienteSupabase
+    .from("configuracoes")
+    .update({
+        saldo_inicial: valor
+    })
+    .eq("id", 1);
+
+    if(error){
+        alert(error.message);
+        return;
+    }
+
+    alert("Caixa atualizado!");
+
+    listarFinanceiro();
+
+}
 function controlarCampos(){
 
     const categoria =
@@ -386,7 +441,19 @@ async function listarFinanceiro(){
 
     let receitas = 0;
     let despesas = 0;
+let saldoInicial = 0;
 
+const { data: config } =
+await clienteSupabase
+.from("configuracoes")
+.select("*")
+.limit(1)
+.single();
+
+if(config){
+    saldoInicial =
+    Number(config.saldo_inicial) || 0;
+}
     data.forEach(item => {
 
         if(item.tipo === "Receita"){
@@ -434,7 +501,7 @@ cursor:pointer;
     <div style="margin-bottom:20px;">
     <strong>Receitas:</strong> R$ ${receitas}<br>
     <strong>Despesas:</strong> R$ ${despesas}<br>
-    <strong>Saldo:</strong> R$ ${receitas - despesas}
+    <strong>Saldo:</strong> R$ ${saldoInicial + receitas - despesas}
     </div>
     ` + lista.innerHTML;
 
@@ -476,8 +543,8 @@ document
 
 controlarCampos();
 carregarJogos();
+carregarSaldoInicial();
 listarFinanceiro();
-
 </script>
     </div>
     
