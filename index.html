@@ -307,52 +307,78 @@ const saldo = saldoInicial + receitas - despesas;
     }
 
     document.getElementById("ultimoResultado").innerHTML = `
-        <p style="font-size:20px;font-weight:bold;color:#c00000;">
-        Vila Nova ${jogo.gols_vila_nova} x ${jogo.gols_adversario} ${jogo.adversario}
-        </p>
 
-        <p>${resultado}</p>
+<h2 style="
+margin:10px 0;
+color:#c00000;
+font-size:28px;
+text-align:center;
+">
+${jogo.gols_vila_nova} x ${jogo.gols_adversario}
+</h2>
 
-        <p>📅 ${jogo.data_jogo}</p>
-    `;
+<p style="
+font-weight:bold;
+text-align:center;
+font-size:18px;
+">
+Vila Nova x ${jogo.adversario}
+</p>
+
+<p style="text-align:center;">
+${resultado}
+</p>
+
+<p style="text-align:center;">
+📅 ${jogo.data_jogo.split("-").reverse().join("/")}
+</p>
+
+<p style="text-align:center;">
+📍 ${jogo.local}
+</p>
+
+`;
 }
-async function carregarProximosJogos(){
+async function carregarProximoJogo(){
 
-   const { data, error } =
+const hoje = new Date().toISOString().split("T")[0];
+
+const { data, error } =
 await clienteSupabase
 .from("jogos")
 .select("*")
-.order("data_jogo", { ascending: true })
-.limit(3);
+.gte("data_jogo", hoje)
+.order("data_jogo", { ascending:true })
+.limit(1);
 
 if(error){
     console.log(error);
     return;
 }
 
-    let html = "";
+if(!data || data.length === 0){
 
-    data.forEach(jogo => {
+    document.getElementById("proximoJogo").innerHTML =
+    "Nenhum jogo agendado.";
 
-       html += `
-<div style="
-background:#f5f5f5;
-padding:12px;
-margin-bottom:10px;
-border-left:5px solid #c00000;
-border-radius:8px;
-">
+    return;
+}
 
-    <strong>📅 ${jogo.data_jogo.split("-").reverse().join("/")}</strong><br>
+const jogo = data[0];
 
-    ⚽ Vila Nova x ${jogo.adversario}
+document.getElementById("proximoJogo").innerHTML = `
 
-</div>
+<h2 style="color:#c00000;margin:10px 0;">
+Vila Nova x ${jogo.adversario}
+</h2>
+
+<p>📅 ${jogo.data_jogo.split("-").reverse().join("/")}</p>
+
+<p>📍 ${jogo.local}</p>
+
+<p>⏳ Próximo Jogo</p>
+
 `;
-
-    });
-
-    document.getElementById("proximosJogos").innerHTML = html;
 
 }
 async function carregarEstatisticas(){
@@ -407,7 +433,7 @@ async function carregarEstatisticas(){
     document.getElementById("totalDerrotas").innerText = derrotas;
 
 }
-carregarProximosJogos();
+carregarProximoJogo();
 carregarCaixaAtual();
 carregarEstatisticas();
 carregarUltimoResultado();
