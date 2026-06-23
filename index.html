@@ -94,6 +94,26 @@ nav a{
     margin:15px;
     font-weight:bold;
     font-size:18px;
+#painelJogos{
+    display:flex;
+    gap:20px;
+    flex-wrap:wrap;
+    margin-bottom:25px;
+}
+
+.card-jogo{
+    flex:1;
+    min-width:300px;
+    background:white;
+    border-radius:15px;
+    padding:20px;
+    box-shadow:0 4px 12px rgba(0,0,0,.15);
+}
+
+.card-jogo h3{
+    color:#c00000;
+    margin-top:0;
+    text-align:center;
 }
 </style>
 
@@ -119,7 +139,27 @@ nav a{
     <span id="menuComissao"></span>
 </nav>
 <div class="container">
+<div id="painelJogos">
 
+<div class="card-jogo">
+<h3>⚽ Último Jogo</h3>
+
+<div id="ultimoResultado">
+Carregando...
+</div>
+
+</div>
+
+<div class="card-jogo">
+<h3>📅 Próximo Jogo</h3>
+
+<div id="proximoJogo">
+Carregando...
+</div>
+
+</div>
+
+</div>
 <div class="card">
 <h2 style="color:#c00000;">
 <h2>
