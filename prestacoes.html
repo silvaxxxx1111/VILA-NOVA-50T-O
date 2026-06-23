@@ -1,1 +1,120 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Prestações de Contas</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js"></script>
+
+<style>
+
+body{
+    font-family:Arial, sans-serif;
+    background:#f5f5f5;
+    margin:0;
+}
+
+header{
+    background:#c00000;
+    color:white;
+    text-align:center;
+    padding:20px;
+}
+
+.container{
+    max-width:1000px;
+    margin:auto;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    margin-bottom:15px;
+    border-radius:12px;
+    box-shadow:0 2px 10px rgba(0,0,0,.10);
+}
+
+h3{
+    color:#c00000;
+    margin-top:0;
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+<h1>📋 Prestações de Contas</h1>
+</header>
+
+<div class="container">
+
+<div id="listaPrestacoes">
+Carregando...
+</div>
+
+</div>
+
+<script>
+
+const supabaseUrl = "COLE_AQUI_A_MESMA_URL_DO_FINANCEIRO";
+const supabaseKey = "COLE_AQUI_A_MESMA_KEY_DO_FINANCEIRO";
+
+const clienteSupabase =
+supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+async function carregarPrestacoes(){
+
+    const { data, error } =
+    await clienteSupabase
+    .from("prestacoes")
+    .select("*")
+    .order("id", { ascending:false });
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    let html = "";
+
+    data.forEach(item => {
+
+        html += `
+        <div class="card">
+
+        <h3>⚽ ${item.adversario}</h3>
+
+        <p>💵 Receitas: R$ ${item.receitas}</p>
+
+        <p>💸 Despesas: R$ ${item.despesas}</p>
+
+        <p>💰 Saldo: R$ ${item.saldo}</p>
+
+        <p>📅 ${item.data_fechamento}</p>
+
+        </div>
+        `;
+
+    });
+
+    document.getElementById("listaPrestacoes").innerHTML =
+    html;
+
+}
+
+carregarPrestacoes();
+
+</script>
+
+</body>
+</html>
 
