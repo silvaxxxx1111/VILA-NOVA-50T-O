@@ -77,7 +77,9 @@ style="color:#ffd700;">
 <div class="container">
 
 <h1>Financeiro</h1>
-    <div class="card" id="cardCaixa">
+   <div class="card"
+id="cardCaixa"
+style="display:none;">
 
 <h3>💰 Caixa Atual</h3>
 
@@ -204,16 +206,25 @@ localStorage.getItem("logado") === "sim";
 
 window.addEventListener("load", () => {
 
-    if(!usuarioLogado){
+  if(!usuarioLogado){
 
-        const area =
-        document.getElementById("areaCadastroFinanceiro");
+    const area =
+    document.getElementById("areaCadastroFinanceiro");
 
-        if(area){
-            area.style.display = "none";
-        }
-
+    if(area){
+        area.style.display = "none";
     }
+
+}else{
+
+    const cardCaixa =
+    document.getElementById("cardCaixa");
+
+    if(cardCaixa){
+        cardCaixa.style.display = "block";
+    }
+
+}
 
 });
 async function carregarJogos(){
