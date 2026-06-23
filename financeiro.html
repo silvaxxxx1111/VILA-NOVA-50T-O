@@ -233,7 +233,7 @@ async function carregarJogos(){
     .from("jogos")
     .select("*")
     .order("data_jogo");
-
+console.log(data);
     const select = document.getElementById("jogo");
 
     select.innerHTML =
